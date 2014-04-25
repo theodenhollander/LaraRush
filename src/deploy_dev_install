@@ -1,0 +1,32 @@
+#!/bin/sh
+# Development
+# Deployment install build script
+echo "Laravel no-script deployment starting"
+
+echo "composer install trunk"
+php -dmemory_limit=2G /var/www/composer.phar install --no-scripts --prefer-dist --working-dir /var/www/ --no-dev
+
+echo "[TASK] dump autoload"
+php -dmemory_limit=2G /var/www/composer.phar dump-autoload --optimize --working-dir /var/www/
+
+echo "artisan down"
+php -dmemory_limit=2G /var/www/artisan down
+
+echo "composer install"
+php -dmemory_limit=2G /var/www/composer.phar install --prefer-dist --working-dir /var/www/ --no-dev
+
+echo "artisan clear-compiled"
+php -dmemory_limit=2G /var/www/artisan clear-compiled
+
+echo "artisan migrate"
+php -dmemory_limit=2G /var/www/artisan migrate
+
+echo "artisan optimize"
+php -dmemory_limit=2G /var/www/artisan optimize
+
+echo "composer dump-autoload"
+php -dmemory_limit=2G /var/www/composer.phar dump-autoload --working-dir /var/www/
+
+echo "artisan up"
+php -dmemory_limit=2G /var/www/artisan up
+
